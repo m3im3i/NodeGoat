@@ -28,7 +28,7 @@ jobs:
     uses: m3im3i/actions-template/.github/workflows/depend-review-template.yaml@main
     with:
       self-hosted: false
-      label: 'ubuntu-latest'
+      runner-labels: '[{"label": "ubuntu-latest"}]'
       language: 'node'
       fail-severity: 'critical'
       continue-on-err: true
@@ -52,7 +52,7 @@ jobs:
     uses: m3im3i/actions-template/.github/workflows/build-template.yaml@main
     with:
       self-hosted: false
-      label: 'ubuntu-latest'
+      runner-labels: '[{"label": "ubuntu-latest"}]'
       language: 'node'
       working-repo: ${{ github.repository }}
       image-name: 'node-goat-dev'
@@ -63,7 +63,7 @@ jobs:
     uses: m3im3i/actions-template/.github/workflows/build-template.yaml@main
     with:
       self-hosted: false
-      label: 'ubuntu-latest'
+      runner-labels: '[{"label": "ubuntu-latest"}]'
       language: 'node'
       working-repo: ${{ github.repository }}
       image-name: 'node-goat-main'
