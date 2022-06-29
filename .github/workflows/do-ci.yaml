@@ -29,8 +29,9 @@ jobs:
     with:
       self-hosted: false
       label: 'ubuntu-latest'
+      language: 'node'
       fail-severity: 'critical'
-      continue: true
+      continue-on-err: true
   call-codeql:
     uses: m3im3i/actions-template/.github/workflows/codeql-template.yaml@main
     with:
