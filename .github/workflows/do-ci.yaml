@@ -1,0 +1,68 @@
+name: "CI"
+on:
+  workflow_dispatch:
+  pull_request:
+    paths-ignore:
+      - '.txt'
+      - '*.MD'
+      - '*.md'
+      - 'LICENSE'
+      - 'docs/**'
+  push:
+    branches:
+      - main
+      - dev
+      - release/*
+    tags-ignore:
+      - '*'
+    paths-ignore:
+      - '.txt'
+      - '*.MD'
+      - '*.md'
+      - 'LICENSE'
+      - 'docs/**'
+      
+jobs:
+  call-dependency-review:
+    if: github.event_name == 'pull_request'
+    uses: m3im3i/actions-template/.github/workflows/depend-review-template.yaml@main
+    with:
+      fail-severity: 'critical'
+      continue: true
+      label: 'ubuntu-latest'
+  call-codeql:
+    uses: m3im3i/actions-template/.github/workflows/codeql-template.yaml@main
+    with:
+      languages-torun: '[{"language": "javascript"}]'
+      label: 'ubuntu-latest'
+      self-hosted: false
+    secrets: inherit
+  call-unittest:
+    name: unit test
+    runs-on: ubuntu-latest
+    steps:
+    - name: unit test stub 
+      run: | 
+        echo "unit test"
+  call-build-dev:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/dev'
+    needs: [call-codeql]
+    uses: m3im3i/actions-template/.github/workflows/build-template.yaml@main
+    with:
+      working-repo: ${{ github.repository }}
+      image-name: 'node-goat-dev'
+      label: 'ubuntu-latest'
+      language: 'node'
+      self-hosted: false
+    secrets: inherit
+  call-build-main:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: [call-codeql]
+    uses: m3im3i/actions-template/.github/workflows/build-template.yaml@main
+    with:
+      working-repo: ${{ github.repository }}
+      image-name: 'node-goat-main'
+      label: 'ubuntu-latest'
+      language: 'node'
+      self-hosted: false
+    secrets: inherit
