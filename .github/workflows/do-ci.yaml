@@ -36,7 +36,7 @@ jobs:
     uses: m3im3i/actions-template/.github/workflows/codeql-template.yaml@main
     with:
       self-hosted: false
-      runner-labels: '[{"label": "ubuntu-latest"}]'
+      runner-labels: '[{"label": "ubuntu-latest"},{"label": "ubuntu-20.04"}]'
       languages-torun: '[{"language": "javascript"}]'
     secrets: inherit
   call-unittest:
